@@ -110,11 +110,3 @@ Run: `e1_20260709_150330` (inference 276, parse_fail 12) · 채점: **normalized
 
 분모는 `summary.md`의 `(hits/applicable)` 표기를 따른다. `—`는 해당 유형에 분모 없음(N/A).  
 상세 리포트: `python scripts/score_run.py --run runs/e1_20260709_150330`
-
-## 불변 원칙 (요약)
-
-- 외부 API 호출 금지 — Ollama 로컬만
-- config seed로 재현 가능
-- gold label은 `data/final/`만 사용, 코드가 생성·수정하지 않음
-- 채점은 규칙 우선; LLM judge는 clarify 품질(`src/judge.py`)만
-- 지표는 T1–T6 발화 유형별 분해 필수
