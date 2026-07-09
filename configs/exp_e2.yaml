@@ -1,0 +1,25 @@
+# Experiment E1 — baseline tool-calling evaluation
+# All runs are reproducible via seed; override run_id to resume or fork.
+
+experiment:
+  name: e2
+  seed: 42
+  repeats: 3
+model:
+  name: qwen2.5:3b
+  endpoint: http://localhost:11434
+registry:
+  # "core8" (core 6 + tier2 2) | "core8_free" (enum -> description, E2) | "full18" (+ distractor 10, E3)
+  variant: core8_free
+dataset:
+  path: data/final/dataset_final.jsonl
+output:
+  base_dir: runs
+  run_id: null
+  logs_file: logs.jsonl
+gate:
+  # true = apply tier-2 × dangerous-state demotion (execute → confirm)
+  enabled: false
+scoring:
+  synonyms_path: data/synonyms.yaml
+  judge_clarify: false

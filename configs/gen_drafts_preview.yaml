@@ -1,0 +1,97 @@
+# Preview config — T2/T6 utterance quality spot-check (3 each via Ollama).
+# Other types minimized; T1 kept for T3 dependency.
+
+seed: 42
+
+generator:
+  model: exaone3.5:7.8b
+  temperature: 0.4
+  endpoint: http://localhost:11434
+
+model:
+  endpoint: http://localhost:11434
+
+registry:
+  variant: core8
+
+output:
+  path: data/drafts/preview_t2_t6.jsonl
+
+vehicle_state_default:
+  speed_kmh: 0
+  gear: P
+  battery_pct: 72
+  outside_temp_c: 3
+  passengers:
+    front: true
+    rear: false
+
+types:
+  T1:
+    count: 3
+    max_risk_tier: 1
+  T2:
+    count: 3
+    max_risk_tier: 1
+  T3:
+    count: 0
+    source_type: T1
+  T4:
+    count: 0
+  T5:
+    count: 0
+    min_state_pairs: 0
+  T6:
+    count: 3
+
+styles:
+  directness: [direct, indirect]
+  particles: [normal, omit]
+  register: [formal, informal]
+
+style_labels:
+  directness:
+    direct: "직접 명령형으로 말한다"
+    indirect: "간접·완곡 표현으로 말한다"
+  particles:
+    normal: "조사를 자연스럽게 사용한다"
+    omit: "구어체처럼 조사를 생략하거나 줄인다"
+  register:
+    formal: "존댓말(합니다체)을 사용한다"
+    informal: "반말(해체)을 사용한다"
+
+destination_seeds: [강남역, 집]
+contact_seeds: [엄마]
+recipient_seeds: [엄마]
+content_seeds: [곧 도착해]
+
+numeric_samples:
+  integer: [0, 3, 5, 22, 100]
+  number: [16, 22, 24, 30]
+
+unsupported_feature_seeds:
+  - 마사지 시트
+  - 차선 변경
+
+t5_reason_keywords: [주행, 위험]
+
+danger_vehicle_states:
+  - label: driving_forward
+    speed_kmh: 60
+    gear: D
+
+result_state_seeds:
+  - 춥다
+  - 졸리다
+  - 뒷좌석 아이가 잔다
+
+enum_ko_hints:
+  zone:
+    driver: 운전석
+  action:
+    open: 열기
+    close: 닫기
+    play: 재생
+  mode:
+    cool: 냉방
+    heat: 난방

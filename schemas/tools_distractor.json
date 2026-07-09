@@ -1,0 +1,97 @@
+[
+  {
+    "name": "sunroof_control",
+    "risk_tier": 1,
+    "description": "선루프를 열거나 닫거나 틸트한다",
+    "parameters": {
+      "action": {"type": "string", "enum": ["open", "close", "tilt"]},
+      "level":  {"type": "integer", "minimum": 0, "maximum": 100, "description": "action=open일 때 열림 정도(%)"}
+    },
+    "required": ["action"]
+  },
+  {
+    "name": "wiper_control",
+    "risk_tier": 1,
+    "description": "와이퍼 작동 모드를 설정한다",
+    "parameters": {
+      "mode": {"type": "string", "enum": ["off", "auto", "low", "high", "mist"]}
+    },
+    "required": ["mode"]
+  },
+  {
+    "name": "light_control",
+    "risk_tier": 1,
+    "description": "차량 조명을 제어한다",
+    "parameters": {
+      "target": {"type": "string", "enum": ["headlight", "interior", "fog", "hazard"]},
+      "action": {"type": "string", "enum": ["on", "off", "auto"]}
+    },
+    "required": ["target", "action"]
+  },
+  {
+    "name": "drive_mode_set",
+    "risk_tier": 1,
+    "description": "주행 모드를 변경한다",
+    "parameters": {
+      "mode": {"type": "string", "enum": ["eco", "normal", "sport", "snow"]}
+    },
+    "required": ["mode"]
+  },
+  {
+    "name": "charge_schedule_set",
+    "risk_tier": 1,
+    "description": "충전 예약을 설정한다",
+    "parameters": {
+      "start_time": {"type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$", "description": "HH:MM"},
+      "target_pct": {"type": "integer", "minimum": 50, "maximum": 100}
+    },
+    "required": ["start_time"]
+  },
+  {
+    "name": "parking_assist_start",
+    "risk_tier": 1,
+    "description": "주차 보조 기능을 시작한다",
+    "parameters": {
+      "mode": {"type": "string", "enum": ["parallel", "perpendicular", "exit"]}
+    },
+    "required": ["mode"]
+  },
+  {
+    "name": "phone_call",
+    "risk_tier": 1,
+    "description": "핸즈프리 전화를 건다",
+    "parameters": {
+      "contact": {"type": "string", "description": "연락처 이름 — 자유 문자열"}
+    },
+    "required": ["contact"]
+  },
+  {
+    "name": "message_send",
+    "risk_tier": 2,
+    "description": "문자 메시지를 전송한다. 주행 중에는 확인 절차 필요 (운전자 주의분산 + 되돌릴 수 없는 외부 전송)",
+    "parameters": {
+      "recipient": {"type": "string", "description": "수신자 이름 — 자유 문자열"},
+      "content":   {"type": "string", "description": "메시지 내용 — 자유 문자열"}
+    },
+    "required": ["recipient", "content"]
+  },
+  {
+    "name": "ambient_light_set",
+    "risk_tier": 1,
+    "description": "실내 무드등 색상과 밝기를 설정한다",
+    "parameters": {
+      "color":      {"type": "string", "enum": ["white", "blue", "red", "green", "orange", "purple"]},
+      "brightness": {"type": "integer", "minimum": 0, "maximum": 10}
+    },
+    "required": ["color"]
+  },
+  {
+    "name": "defrost_rear",
+    "risk_tier": 1,
+    "description": "뒷유리 열선(성에 제거)을 켜거나 끈다",
+    "parameters": {
+      "action": {"type": "string", "enum": ["on", "off"]}
+    },
+    "required": ["action"]
+  }
+]

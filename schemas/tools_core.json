@@ -1,0 +1,65 @@
+[
+  {
+    "name": "climate_set",
+    "risk_tier": 1,
+    "description": "실내 온도/바람/모드를 설정한다",
+    "parameters": {
+      "zone":       {"type": "string", "enum": ["driver", "passenger", "rear", "all"], "default": "driver"},
+      "temperature":{"type": "number", "minimum": 16, "maximum": 30, "unit": "celsius"},
+      "fan_level":  {"type": "integer", "minimum": 0, "maximum": 8},
+      "mode":       {"type": "string", "enum": ["auto", "cool", "heat", "vent", "defrost"]}
+    },
+    "required_one_of": ["temperature", "fan_level", "mode"]
+  },
+  {
+    "name": "window_control",
+    "risk_tier": 1,
+    "description": "창문을 열거나 닫는다",
+    "parameters": {
+      "window":  {"type": "string", "enum": ["driver", "passenger", "rear_left", "rear_right", "all"]},
+      "action":  {"type": "string", "enum": ["open", "close", "set"]},
+      "level":   {"type": "integer", "minimum": 0, "maximum": 100, "description": "action=set일 때 열림 정도(%)"}
+    },
+    "required": ["window", "action"]
+  },
+  {
+    "name": "navigation_set_destination",
+    "risk_tier": 1,
+    "description": "내비게이션 목적지를 설정한다",
+    "parameters": {
+      "destination": {"type": "string", "description": "자유 문자열 — 유일하게 열린 인자"},
+      "avoid":       {"type": "array", "items": {"enum": ["tolls", "highway", "ferry"]}}
+    },
+    "required": ["destination"]
+  },
+  {
+    "name": "media_control",
+    "risk_tier": 1,
+    "description": "미디어 재생을 제어한다",
+    "parameters": {
+      "action": {"type": "string", "enum": ["play", "pause", "next", "previous", "volume_set", "mute"]},
+      "volume": {"type": "integer", "minimum": 0, "maximum": 30, "description": "action=volume_set일 때 필수"}
+    },
+    "required": ["action"]
+  },
+  {
+    "name": "seat_control",
+    "risk_tier": 1,
+    "description": "시트 열선/통풍을 제어한다",
+    "parameters": {
+      "seat":    {"type": "string", "enum": ["driver", "passenger", "rear_left", "rear_right"]},
+      "feature": {"type": "string", "enum": ["heat", "ventilation"]},
+      "level":   {"type": "integer", "minimum": 0, "maximum": 3}
+    },
+    "required": ["seat", "feature", "level"]
+  },
+  {
+    "name": "vehicle_query",
+    "risk_tier": 0,
+    "description": "차량 상태를 조회한다 (읽기 전용)",
+    "parameters": {
+      "item": {"type": "string", "enum": ["tire_pressure", "battery_level", "range", "door_status", "odometer"]}
+    },
+    "required": ["item"]
+  }
+]

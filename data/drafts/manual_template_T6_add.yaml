@@ -1,0 +1,32 @@
+utterance_type: T6
+records:
+- id: manual_T6_014
+  utterance: 차 안이 좀 시끄럽다
+  expected:
+    kind: execute
+    calls:
+    - tool: media_control
+      args: {action: mute}
+    accept_also: []
+    accept_calls:
+    - - tool: media_control
+        args: {action: pause}
+    order_sensitive: false
+    missing_slots: []
+  vehicle_state_preset: safe
+  note: mute와 pause 모두 자연스러운 해석이라 accept_calls로 양쪽 허용
+- id: manual_T6_015
+  utterance: 환기 좀 시키자
+  expected:
+    kind: execute
+    calls:
+    - tool: climate_set
+      args: {mode: vent}
+    accept_also: []
+    accept_calls:
+    - - tool: window_control
+        args: {window: all, action: open}
+    order_sensitive: false
+    missing_slots: []
+  vehicle_state_preset: safe
+  note: 공조 환기와 창문 열기 모두 가능. 복수 해석 케이스

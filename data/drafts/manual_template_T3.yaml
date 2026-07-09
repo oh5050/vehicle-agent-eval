@@ -1,0 +1,153 @@
+# Human-written batch template — fill utterance and expected fields.
+# Gold registry variant: core8 only (distractor tools forbidden).
+utterance_type: T3
+records:
+- id: manual_T3_001
+  utterance: 창문 열어줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+    missing_slots:
+    - window
+  vehicle_state_preset: safe
+  intended_tool: window_control
+  note: window_control requires window
+- id: manual_T3_002
+  utterance: 창문 닫아줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+    missing_slots:
+    - window
+  vehicle_state_preset: safe
+  intended_tool: window_control
+  note: window_control requires window
+- id: manual_T3_003
+  utterance: 열선 켜줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also:
+    - execute
+    accept_calls:
+    - - tool: seat_control
+        args:
+          seat: driver
+          feature: heat
+          level: 1
+    order_sensitive: false
+    missing_slots:
+    - seat
+    - level
+  vehicle_state_preset: safe
+  intended_tool: seat_control
+  note: 스키마상 seat/level이 required이므로 clarify가 형식적 정답. 그러나 운전자가 "열선 켜줘"라고 말하면 운전석 1단계 실행이 실용적 정답. 스키마에 default가 없어 생기는 형식-실용 괴리 사례. accept_calls로 양쪽 허용.
+- id: manual_T3_004
+  utterance: 통풍 켜줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also:
+    - execute
+    accept_calls:
+    - - tool: seat_control
+        args:
+          seat: driver
+          feature: ventilation
+          level: 1
+    order_sensitive: false
+    missing_slots:
+    - seat
+    - level
+  vehicle_state_preset: safe
+  intended_tool: seat_control
+  note: 스키마상 seat/level이 required이므로 clarify가 형식적 정답. 그러나 운전자가 "통풍 켜줘"라고 말하면 운전석 1단계 실행이 실용적 정답. 스키마에 default가 없어 생기는 형식-실용 괴리 사례. accept_calls로 양쪽 허용.
+- id: manual_T3_005
+  utterance: 조수석 시트 좀 켜줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+    missing_slots:
+    - feature
+    - level
+  vehicle_state_preset: safe
+  intended_tool: seat_control
+  note: seat=passenger 복원 가능. feature, level 필요
+- id: manual_T3_006
+  utterance: 시트 조절해줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+    missing_slots:
+    - seat
+    - feature
+    - level
+  vehicle_state_preset: safe
+  intended_tool: seat_control
+  note: seat_control requires seat, feature, level
+- id: manual_T3_007
+  utterance: 안내 시작해줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+    missing_slots:
+    - destination
+  vehicle_state_preset: safe
+  intended_tool: navigation_set_destination
+  note: navigation_set_destination requires destination
+- id: manual_T3_008
+  utterance: 내비게이션 켜줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+    missing_slots:
+    - destination
+  vehicle_state_preset: safe
+  intended_tool: navigation_set_destination
+  note: navigation_set_destination requires destination
+- id: manual_T3_009
+  utterance: 차량 상태 알려줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+    missing_slots:
+    - item
+  vehicle_state_preset: safe
+  intended_tool: vehicle_query
+  note: vehicle_query requires item
+- id: manual_T3_010
+  utterance: 공조 좀 설정해줘
+  expected:
+    kind: clarify
+    calls: []
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+    missing_slots:
+    - temperature
+    - fan_level
+    - mode
+  vehicle_state_preset: safe
+  intended_tool: climate_set
+  note: required_one_of 3개 중 아무것도 발화에 없음

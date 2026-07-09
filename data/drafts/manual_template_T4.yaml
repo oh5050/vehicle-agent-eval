@@ -1,0 +1,49 @@
+# Human-written batch template — fill utterance and expected fields.
+# Gold registry variant: core8 only (distractor tools forbidden).
+utterance_type: T4
+records:
+- id: manual_T4_001
+  utterance: 마사지 시트 기능 켜줘
+  expected:
+    kind: refuse
+    calls: []
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 지원하지 않는 마사지 시트 기능 요청
+- id: manual_T4_002
+  utterance: 차선 변경 자동으로 해줘
+  expected:
+    kind: refuse
+    calls: []
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 지원하지 않는 차선 변경 기능 요청
+- id: manual_T4_003
+  utterance: 자율주행 기능 켜줘
+  expected:
+    kind: refuse
+    calls: []
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 지원하지 않는 자율주행 활성화 요청
+- id: manual_T4_004
+  utterance: HUD 각도 조절해줘
+  expected:
+    kind: refuse
+    calls: []
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 지원하지 않는 HUD 설정 요청
+- id: manual_T4_005
+  utterance: 서스펜션 높이 조절해줘
+  expected:
+    kind: refuse
+    calls: []
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 지원하지 않는 서스펜션 조절 기능 요청

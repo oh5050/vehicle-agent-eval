@@ -1,0 +1,33 @@
+# Normalization synonyms for rule-based scoring (Stage 4 normalizer).
+#
+# Structure: <param_name> → { <alias>: <canonical enum value> }
+# The normalizer maps alias values (as produced by the model) to canonical
+# schema enum values before comparison. Applied symmetrically to gold & pred.
+#
+# 사람이 관리하는 파일 — 코드는 읽기만 한다.
+
+window:
+  # "운전석": driver
+  # "조수석": passenger
+  {}
+
+seat:
+  # "운전석": driver
+  # "뒷좌석왼쪽": rear_left
+  {}
+
+zone:
+  # "운전석": driver
+  # "전체": all
+  {}
+
+mode:
+  # "냉방": cool
+  # "난방": heat
+  # "제습": defrost
+  {}
+
+item:
+  # "타이어": tire_pressure
+  # "배터리": battery_level
+  {}

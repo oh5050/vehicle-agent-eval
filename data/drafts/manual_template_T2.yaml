@@ -1,0 +1,192 @@
+# Human-written batch template — fill utterance and expected fields.
+# Gold registry variant: core8 only (distractor tools forbidden).
+
+# T2 = 서로 다른 2개 이상 툴, 수치 인자는 발화에 숫자로 명시,
+#      order_sensitive는 "앞 호출 결과가 뒤 호출 인자를 결정하는가"로 판정
+utterance_type: T2
+records:
+- id: manual_T2_001
+  utterance: 창문 다 닫고 실내 온도 23도로 맞춰줘
+  expected:
+    kind: execute
+    calls:
+    - tool: window_control
+      args:
+        window: all
+        action: close
+    - tool: climate_set
+      args:
+        temperature: 23
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 창문 제어와 온도 설정은 독립적인 동작
+- id: manual_T2_002
+  utterance: 음악 멈추고 조수석 통풍 2단계로 켜줘
+  expected:
+    kind: execute
+    calls:
+    - tool: media_control
+      args:
+        action: pause
+    - tool: seat_control
+      args:
+        seat: passenger
+        feature: ventilation
+        level: 2
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 미디어와 좌석 기능 동시 실행
+- id: manual_T2_003
+  utterance: 배터리 얼마 남았는지 알려주고 음악 틀어줘
+  expected:
+    kind: execute
+    calls:
+    - tool: vehicle_query
+      args:
+        item: battery_level
+    - tool: media_control
+      args:
+        action: play
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 차량 조회와 음악 재생은 독립 동작
+- id: manual_T2_004
+  utterance: 왼쪽 뒤 창문 닫고 음악 재생해줘
+  expected:
+    kind: execute
+    calls:
+    - tool: window_control
+      args:
+        window: rear_left
+        action: close
+    - tool: media_control
+      args:
+        action: play
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 창문과 미디어 제어는 독립 동작
+- id: manual_T2_005
+  utterance: 운전석 열선 2단계 켜고 실내 온도 24도로 설정해줘
+  expected:
+    kind: execute
+    calls:
+    - tool: seat_control
+      args:
+        seat: driver
+        feature: heat
+        level: 2
+    - tool: climate_set
+      args:
+        temperature: 24
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 좌석 난방과 공조 설정은 독립 동작
+- id: manual_T2_006
+  utterance: 에어컨 켜고 음악은 이전 곡으로 바꿔줘
+  expected:
+    kind: execute
+    calls:
+    - tool: climate_set
+      args:
+        mode: cool
+    - tool: media_control
+      args:
+        action: previous
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 공조와 미디어 제어는 독립 동작
+- id: manual_T2_007
+  utterance: 오른쪽 뒤 창문 열고 조수석 통풍 3단계로 켜줘
+  expected:
+    kind: execute
+    calls:
+    - tool: window_control
+      args:
+        window: rear_right
+        action: open
+    - tool: seat_control
+      args:
+        seat: passenger
+        feature: ventilation
+        level: 3
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 후석 창문과 조수석 좌석 기능 요청
+- id: manual_T2_008
+  utterance: 타이어 공기압 확인하고 음악 틀어줘
+  expected:
+    kind: execute
+    calls:
+    - tool: vehicle_query
+      args:
+        item: tire_pressure
+    - tool: media_control
+      args:
+        action: play
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 차량 상태 조회와 음악 재생은 독립 동작
+- id: manual_T2_009
+  utterance: 실내 온도 20도로 낮추고 음악 음소거해줘
+  expected:
+    kind: execute
+    calls:
+    - tool: climate_set
+      args:
+        temperature: 20
+    - tool: media_control
+      args:
+        action: mute
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 공조와 미디어 제어는 독립 동작
+- id: manual_T2_010
+  utterance: 운전석 열선 끄고 운전석 창문 닫아줘
+  expected:
+    kind: execute
+    calls:
+    - tool: seat_control
+      args: {seat: driver, feature: heat, level: 0}
+    - tool: window_control
+      args: {window: driver, action: close}
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 좌석 기능과 창문 제어는 독립 동작
+- id: manual_T2_011
+  utterance: 바람 모드 냉방으로 바꾸고 음악 다음 곡으로 넘겨줘
+  expected:
+    kind: execute
+    calls:
+    - tool: climate_set
+      args:
+        mode: cool
+    - tool: media_control
+      args:
+        action: next
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 공조 모드와 미디어 변경은 독립 동작
+- id: manual_T2_012
+  utterance: 강남역으로 안내하고 실내 온도 21도로 맞춰줘
+  expected:
+    kind: execute
+    calls:
+    - tool: navigation_set_destination
+      args: {destination: 강남역}
+    - tool: climate_set
+      args: {temperature: 21}
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 창문 제어와 좌석 통풍은 독립 동작

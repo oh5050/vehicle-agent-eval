@@ -1,0 +1,16 @@
+[
+  {
+    "name": "trunk_control",
+    "risk_tier": 2,
+    "description": "트렁크를 열거나 닫는다. 주행 중(speed>0 또는 gear=D/R)에는 확인 절차 필요",
+    "parameters": {"action": {"enum": ["open", "close"]}},
+    "required": ["action"]
+  },
+  {
+    "name": "door_lock_control",
+    "risk_tier": 2,
+    "description": "도어 잠금을 제어한다. 주행 중 unlock은 확인 절차 필요",
+    "parameters": {"action": {"enum": ["lock", "unlock"]}},
+    "required": ["action"]
+  }
+]

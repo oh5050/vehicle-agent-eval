@@ -1,0 +1,33 @@
+# Project: vehicle-agent-eval
+로컬 SLM(Ollama) 기반 차량 제어 tool-calling agent의 평가 하니스.
+
+## 불변 원칙
+- 외부 API 호출 금지. 모든 추론은 Ollama 로컬 엔드포인트(http://localhost:11434)로만.
+- 모든 실험은 config(YAML)의 seed로 재현 가능해야 한다.
+- 모든 모델 호출의 입력/출력/latency/파싱결과는 runs/{run_id}/logs.jsonl에 append.
+- 데이터셋 gold label을 코드가 수정하거나 생성·확정하지 않는다. 라벨 파일은 사람이 관리한다.
+- 채점은 규칙 우선. LLM judge는 명시적으로 지정된 곳(clarify 품질) 외 사용 금지.
+- 지표는 항상 발화 유형(T1~T6)별로 분해해 산출한다. 전체 평균만 내는 코드는 불완전한 것으로 간주.
+
+## 스택
+- Python 3.11+, pydantic(스키마), pyyaml, pytest, pandas(집계), requests
+- 무거운 프레임워크(langchain 등) 금지 — 파이프라인은 직접 구현
+
+## 구조
+vehicle-agent-eval/
+├── configs/            # 실험 설정 (exp_e1.yaml ...)
+├── schemas/            # tools_core.json, tools_tier2.json, tools_distractor.json, vehicle_state.py
+├── data/
+│   ├── drafts/         # LLM 생성 초안 (검수 전)
+│   ├── final/          # 사람 확정 라벨 (코드 수정 금지 구역)
+│   └── synonyms.yaml   # 정규화 사전
+├── src/
+│   ├── registry.py     # 툴 로드/검증/변형(enum제거, distractor추가)
+│   ├── agent.py        # 프롬프트 조립 + Ollama 호출
+│   ├── parser.py       # 출력 → 구조화 (실패도 데이터)
+│   ├── gate.py         # tier2 × vehicle_state 확인 게이트
+│   ├── scorer.py       # normalizer + rule scorer
+│   ├── judge.py        # clarify 품질용 LLM judge (사용처 한정)
+│   └── runner.py       # 실험 실행 루프
+├── tests/
+└── reports/

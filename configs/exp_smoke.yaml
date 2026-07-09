@@ -1,0 +1,26 @@
+experiment:
+  name: smoke
+  seed: 42
+  repeats: 1
+
+dataset:
+  path: data/final/smoke.jsonl
+
+model:
+  name: qwen2.5:3b
+  endpoint: http://localhost:11434
+
+registry:
+  variant: core8
+
+output:
+  base_dir: runs
+  run_id: null
+  logs_file: logs.jsonl
+
+gate:
+  enabled: true
+
+scoring:
+  synonyms_path: data/synonyms.yaml
+  judge_clarify: false

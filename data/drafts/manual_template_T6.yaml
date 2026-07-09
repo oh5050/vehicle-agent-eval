@@ -1,0 +1,175 @@
+# Human-written batch template — fill utterance and expected fields.
+# Gold registry variant: core8 only (distractor tools forbidden).
+
+# T6 = 직접 명령 금지, 상태·불편만 표현, 수치 인자 필요한 툴 회피,
+#      복수 해석 자연스러우면 accept_also에 양쪽
+utterance_type: T6
+records:
+- id: manual_T6_001
+  utterance: 좀 춥네
+  expected:
+    kind: execute
+    calls:
+    - tool: climate_set
+      args:
+        mode: heat
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 발화에 대상이 명시되지 않은 공조 요청은 기본 zone(driver) 적용
+- id: manual_T6_002
+  utterance: 앞유리에 김이 서렸어
+  expected:
+    kind: execute
+    calls:
+    - tool: climate_set
+      args:
+        mode: defrost
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 앞유리 김서림 제거 요청
+- id: manual_T6_003
+  utterance: 차 안이 너무 덥다
+  expected:
+    kind: execute
+    calls:
+    - tool: climate_set
+      args:
+        mode: cool
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 대상이 명시되지 않은 공조 요청은 기본 zone(driver) 적용
+- id: manual_T6_004
+  utterance: 차 안이 너무 조용했으면 좋겠어
+  expected:
+    kind: execute
+    calls:
+    - tool: media_control
+      args:
+        action: mute
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 소음 감소 의도로 미디어 음소거 실행
+- id: manual_T6_005
+  utterance: 이 노래 별로다
+  expected:
+    kind: execute
+    calls:
+    - tool: media_control
+      args:
+        action: next
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 현재 재생 음악 변경 요청
+- id: manual_T6_006
+  utterance: 집에 가고 싶다
+  expected:
+    kind: execute
+    calls:
+    - tool: navigation_set_destination
+      args:
+        destination: 집
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 목적지 표현을 통한 내비게이션 요청
+- id: manual_T6_007
+  utterance: 얼마나 더 갈 수 있어
+  expected:
+    kind: execute
+    calls:
+    - tool: vehicle_query
+      args:
+        item: range
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 남은 주행 가능 거리 조회 요청
+- id: manual_T6_008
+  utterance: 타이어 상태 괜찮은지 봐줘
+  expected:
+    kind: execute
+    calls:
+    - tool: vehicle_query
+      args:
+        item: tire_pressure
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 타이어 상태 확인 요청
+- id: manual_T6_009
+  utterance: 문 잠겨 있는지 궁금해
+  expected:
+    kind: execute
+    calls:
+    - tool: vehicle_query
+      args:
+        item: door_status
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 차량 도어 상태 조회 요청
+- id: manual_T6_010
+  utterance: 이 차 얼마나 탔지
+  expected:
+    kind: execute
+    calls:
+    - tool: vehicle_query
+      args:
+        item: odometer
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 누적 주행 거리 조회 요청
+- id: manual_T6_011
+  utterance: 회사로 가자
+  expected:
+    kind: execute
+    calls:
+    - tool: navigation_set_destination
+      args:
+        destination: 회사
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 목적지 표현을 통한 내비게이션 요청
+- id: manual_T6_012
+  utterance: 바람 좀 쐬고 싶다
+  expected:
+    kind: execute
+    calls:
+    - tool: climate_set
+      args:
+        mode: vent
+    accept_also: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 환기 의도로 공조 vent 모드 실행
+- id: manual_T6_013
+  utterance: 뒷자리가 덥대
+  expected:
+    kind: execute
+    calls:
+    - tool: climate_set
+      args:
+        zone: rear
+        mode: cool
+    accept_also: []
+    accept_calls: []
+    order_sensitive: false
+  vehicle_state_preset: safe
+  note: 발화에 대상이 명시된 공조 요청은 해당 zone(rear)을 적용

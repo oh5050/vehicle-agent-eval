@@ -1,0 +1,226 @@
+# Draft generation config — matrix sampling + Ollama utterance rendering.
+# All generation is reproducible via seed.
+
+seed: 42
+
+generator:
+  model: exaone3.5:7.8b
+  temperature: 0.4
+  endpoint: http://localhost:11434
+  max_retries: 3
+
+# Legacy alias — generator.* takes precedence when present.
+model:
+  endpoint: http://localhost:11434
+
+quality_gate:
+  min_length: 5
+  max_length: 80
+  assistant_patterns:
+    - 하겠습니다
+    - 해드리
+    - 설정합니다
+    - 해드릴까요
+    - 도와드리
+    - 알겠습니다
+
+registry:
+  # registry.variant는 반드시 core8. distractor 툴은 절대 gold 정답이 될 수 없다.
+  # gold가 variant에 따라 달라지면 E1(core8)과 E3(full18)의 비교가 불가능해진다.
+  variant: core8
+
+output:
+  path: data/drafts/dataset_draft.jsonl
+
+# Default vehicle context injected into every record unless overridden (T5).
+vehicle_state_default:
+  speed_kmh: 0
+  gear: P
+  battery_pct: 72
+  outside_temp_c: 3
+  passengers:
+    front: true
+    rear: false
+
+# Utterance-type targets.
+# T1: 단일 툴 명확 호출 (risk_tier<=1 core 툴)
+# T2: compound — 서로 다른 2개 이상 core 툴 복합 명령 (유형≠risk_tier)
+# T3: T1에서 required 슬롯 1개 의도적 생략 → clarify
+# T4: core8·full18 모두 미지원 기능 → refuse
+# T5: tier2 툴 단일 호출 × {안전 state→execute, 위험 state→confirm} 쌍
+# T6: 결과 상태만 표현
+types:
+  T1:
+    count: 30
+    max_risk_tier: 1
+  T2:
+    count: 12
+    max_risk_tier: 1
+  T3:
+    count: 12
+    source_type: T1
+  T4:
+    count: 10
+  T5:
+    count: 10
+    min_state_pairs: 5
+  T6:
+    count: 10
+
+# 화법 축 — each sampled record gets one assignment per axis where applicable.
+styles:
+  directness: [direct, indirect]
+  particles: [normal, omit]
+  register: [formal, informal]
+
+style_labels:
+  directness:
+    direct: "직접 명령형으로 말한다"
+    indirect: "간접·완곡 표현으로 말한다"
+  particles:
+    normal: "조사를 자연스럽게 사용한다"
+    omit: "구어체처럼 조사를 생략하거나 줄인다"
+  register:
+    formal: "존댓말(합니다체)을 사용한다"
+    informal: "반말(해체)을 사용한다"
+
+# Free-text parameter seeds for combinatorial slot filling.
+destination_seeds:
+  - 강남역
+  - 인천공항
+  - 집
+  - 회사
+  - 스타벅스 역삼점
+
+contact_seeds:
+  - 엄마
+  - 아내
+  - 김과장
+  - 민수
+
+recipient_seeds:
+  - 엄마
+  - 팀장님
+  - 친구
+
+content_seeds:
+  - 곧 도착해
+  - 회의 늦어
+  - 퇴근했어
+
+# Numeric samples used when enumerating integer/number slots.
+numeric_samples:
+  integer: [0, 1, 3, 5, 8, 10, 15, 22, 30, 50, 100]
+  number: [16, 18, 20, 22, 24, 26, 28, 30]
+
+# T4 — core8·full18 양쪽 모두 미지원 (distractor로 커버되는 기능 제외)
+unsupported_feature_seeds:
+  - 마사지 시트
+  - 차선 변경
+  - 자율주행 활성화
+  - 헤드업 디스플레이 각도 조절
+  - 차량 자세 제어
+  - 후방 충돌 방지 끄기
+  - 블랙박스 영상 재생
+  - 차량 세차 모드
+  - 스포일러 펼치기
+  - 향수 분사
+
+# T5 — 위험 state에서 confirm 근거 키워드
+t5_reason_keywords:
+  - 주행
+  - 위험
+
+# T5 — dangerous vehicle_state variants (paired against vehicle_state_default).
+danger_vehicle_states:
+  - label: driving_forward
+    speed_kmh: 60
+    gear: D
+  - label: reversing
+    speed_kmh: 5
+    gear: R
+  - label: creeping_unlock
+    speed_kmh: 15
+    gear: D
+
+# T6 — result-state seeds (차량 기능으로 해결 가능한 불편/상태만; 미지원 소재 제외)
+result_state_seeds:
+  - 춥다
+  - 더워
+  - 졸리다
+  - 뒷좌석 아이가 잔다
+  - 앞좌석 승객이 더워한다
+  - 성에가 가득하다
+  - 배터리가 부족해 보인다
+  - 시끄러워서 음악을 줄이고 싶다
+
+# Korean hints for enum slot values passed into utterance prompts.
+enum_ko_hints:
+  zone:
+    driver: 운전석
+    passenger: 조수석
+    rear: 뒷좌석
+    all: 전체
+  window:
+    driver: 운전석 창
+    passenger: 조수석 창
+    rear_left: 뒷좌석 왼쪽 창
+    rear_right: 뒷좌석 오른쪽 창
+    all: 모든 창
+  action:
+    open: 열기
+    close: 닫기
+    set: 특정 위치로
+    on: 켜기
+    off: 끄기
+    lock: 잠금
+    unlock: 잠금 해제
+    play: 재생
+    pause: 일시정지
+    next: 다음
+    previous: 이전
+    volume_set: 볼륨 설정
+    mute: 음소거
+  mode:
+    auto: 자동
+    cool: 냉방
+    heat: 난방
+    vent: 환기
+    defrost: 성에 제거
+    off: 끄기
+    low: 약
+    high: 강
+    mist: 미스트
+    eco: 에코
+    normal: 일반
+    sport: 스포츠
+    snow: 스노우
+    parallel: 평행
+    perpendicular: 수직
+    exit: 빠져나오기
+  seat:
+    driver: 운전석
+    passenger: 조수석
+    rear_left: 뒷좌석 왼쪽
+    rear_right: 뒷좌석 오른쪽
+  feature:
+    heat: 열선
+    ventilation: 통풍
+  item:
+    tire_pressure: 타이어 공기압
+    battery_level: 배터리 잔량
+    range: 주행 가능 거리
+    door_status: 도어 상태
+    odometer: 주행 거리
+  target:
+    headlight: 헤드라이트
+    interior: 실내등
+    fog: 안개등
+    hazard: 비상등
+  color:
+    white: 흰색
+    blue: 파랑
+    red: 빨강
+    green: 초록
+    orange: 주황
+    purple: 보라
